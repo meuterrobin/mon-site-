@@ -1,0 +1,154 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,400&family=DM+Sans:wght@400;500;600&display=swap');
+
+.ic-emotions {
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: #1a1a1a;
+  -webkit-font-smoothing: antialiased;
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 8px 16px 0px 16px;
+}
+
+/* ---------- Emoji picker ---------- */
+.ic-picker {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+  margin-bottom: 0px;
+}
+.ic-emo-btn {
+  background: transparent;
+  border: 1px solid #ebe8e2;
+  border-radius: 14px;
+  padding: 10px 4px 8px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.25s cubic-bezier(0.33, 1, 0.68, 1);
+  font-family: inherit;
+  -webkit-tap-highlight-color: transparent;
+}
+.ic-emo-btn:hover {
+  border-color: #d0ccc2;
+  transform: translateY(-2px);
+}
+.ic-emo-btn.selected {
+  background: #1a1a1a;
+  border-color: #1a1a1a;
+}
+.ic-emo-btn.selected .ic-emo-name { color: #fff; }
+.ic-emo-btn .ic-emo-face {
+  font-size: 24px;
+  line-height: 1;
+  transition: transform 0.3s ease;
+}
+.ic-emo-btn:hover .ic-emo-face,
+.ic-emo-btn.selected .ic-emo-face {
+  transform: scale(1.12);
+}
+.ic-emo-name {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 12px;
+  font-weight: 400;
+  font-style: italic;
+  color: #5a5a5a;
+  letter-spacing: -0.01em;
+  transition: color 0.3s ease;
+}
+
+/* ---------- Brain ---------- */
+.ic-brain-stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4/3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ic-brain-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: visible;
+}
+
+.ic-region {
+  opacity: 0;
+  transform-origin: center;
+  transition: opacity 0.5s ease;
+}
+.ic-region.active {
+  opacity: 1;
+  animation: ic-pulse 2.4s ease-in-out infinite;
+}
+@keyframes ic-pulse {
+  0%, 100% { filter: drop-shadow(0 0 5px currentColor) brightness(1); }
+  50%      { filter: drop-shadow(0 0 14px currentColor) brightness(1.12); }
+}
+
+.ic-connection {
+  opacity: 0;
+  stroke-dasharray: 3 4;
+  transition: opacity 0.6s ease;
+  animation: ic-dash 3s linear infinite;
+}
+.ic-connection.active { opacity: 0.45; }
+@keyframes ic-dash {
+  to { stroke-dashoffset: -14; }
+}
+
+/* ---------- Caption ---------- */
+.ic-caption {
+  margin-top: 8px;
+  text-align: center;
+  min-height: 76px;
+  transition: opacity 0.3s ease;
+}
+.ic-caption.empty .ic-tag,
+.ic-caption.empty .ic-regions {
+  opacity: 0;
+}
+.ic-caption.empty .ic-prompt {
+  opacity: 1;
+}
+.ic-prompt {
+  font-family: 'Fraunces', Georgia, serif;
+  font-style: italic;
+  font-size: 15px;
+  color: #9a9a9a;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  position: absolute;
+  left: 0; right: 0;
+  margin-top: 0;
+}
+.ic-tag {
+  display: inline-block;
+  font-family: 'Fraunces', Georgia, serif;
+  font-style: italic;
+  font-size: 14px;
+  padding: 5px 14px;
+  border-radius: 999px;
+  background: #f4f1ea;
+  color: #1a1a1a;
+  transition: all 0.4s ease;
+  margin-bottom: 10px;
+}
+.ic-regions {
+  font-size: 13px;
+  color: #5a5a5a;
+  letter-spacing: 0.01em;
+  line-height: 1.5;
+  transition: opacity 0.3s ease;
+  padding: 0 8px;
+}
+
+/* mobile tweaks */
+@media (max-width: 420px) {
+  .ic-picker { gap: 4px; }
+  .ic-emo-btn { padding: 8px 2px 6px; border-radius: 12px; }
+  .ic-emo-btn .ic-emo-face { font-size: 22px; }
+  .ic-emo-name { font-size: 11px; }
+}

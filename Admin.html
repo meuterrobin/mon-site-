@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Inner Clarity — Administration</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #f7f9fb; color: #1b1b1b; font-family: 'DM Sans', -apple-system, sans-serif; }
+  ::selection { background: #14362B; color: #fff; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel" data-presets="react">
+
+const CATEGORIES = [
+  "Signaux du corps",
+  "Gestion des émotions",
+  "Respiration",
+  "Schémas de pensée",
+  "Sommeil & récupération"
+];
+
+function getLevel(score) {
+  if (score >= 75) return { label: "Régulé", color: "#527d54" };
+  if (score >= 50) return { label: "Modéré", color: "#d98142" };
+  return { label: "En alerte", color: "#c84d4d" };
+}
+
+function MiniRadar({ catData }) {
+  const cx = 60, cy = 60, r = 45, n = catData.length;
+  const pts = catData.map((c, i) => {
+    const angle = (Math.PI * 2 * i / n) - Math.PI / 2;
+    const d = r * c.score / 100;
+    return { x: cx + d * Math.cos(angle), y: cy + d * Math.sin(angle) };
+  });
+  const grid = [50, 100].map(pct => {
+    const gpts = Array.from({length: n}, (_, i) => {
+      const angle = (Math.PI * 2 * i / n) - Math.PI / 2;
+      const d = r * pct / 100;
+      return (cx + d * Math.cos(angle)).toFixed(1) + ',' + (cy + d * Math.sin(angle)).toFixed(1);
+    });
+    return <polygon key={pct} points={gpts.join(' ')} fill="none" stroke="#e5e5e5" strokeWidth="0.5" />;
+  });
+
+  return (
+    <svg viewBox="0 0 120 120" width="100" height="100">
+      {grid}
+      <polygon
+        points={pts.map(p => p.x.toFixed(1) + ',' + p.y.toFixed(1)).join(' ')}
+        fill="rgba(20,54,43,0.15)" stroke="#14362B" strokeWidth="1.2"
+      />
+      {pts.map((p, i) => <circle key={i} cx={p.x} cy={p.y} r="2" fill="#14362B" />)}
+    </svg>
+  );
+}
+
+function AdminApp() {
+  const [submissions, setSubmissions] = React.useState([]);
+  const [selected, setSelected] = React.useState(null);
+  const [search, setSearch] = React.useState('');
+
+  React.useEffect(() => {
+    try {
+      const subs = JSON.parse(localStorage.getItem('ic:submissions') || '[]');
+      setSubmissions(subs.reverse());
+    } catch(e) { setSubmissions([]); }
+  }, []);
+
+  const filtered = submissions.filter(s => {
+    const q = search.toLowerCase();
+    if (!q) return true;
+    return (s.firstName + ' ' + s.lastName + ' ' + s.email).toLowerCase().includes(q);
+  });
+
+  const computeScores = (answers) => {
+    // Minimal score computation - same logic as main site
+    const cats = {};
+    answers.forEach(a => {
+      // We don't have QUESTIONS here, so just show raw answers
+    });
+    return null;
+  };
+
+  const formatDate = (iso) => {
+    try {
+      const d = new Date(iso);
+      return d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+    } catch(e) { return iso; }
+  };
+
+  const clearAll = () => {
+    if (confirm('Supprimer toutes les soumissions ?')) {
+      localStorage.removeItem('ic:submissions');
+      setSubmissions([]);
+      setSelected(null);
+    }
+  };
+
+  return (
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+      {/* Header */}
+      <header style={{
+        padding: '20px 32px', background: '#14362B', color: '#fff',
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between'
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+          <div style={{
+            width: 36, height: 36, borderRadius: 10, background: 'rgba(255,255,255,0.15)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16, fontWeight: 700
+          }}>IC</div>
+          <div>
+            <h1 style={{ fontSize: 17, fontWeight: 700, margin: 0, letterSpacing: '-0.01em' }}>Inner Clarity</h1>
+            <p style={{ fontSize: 11, margin: 0, opacity: 0.6 }}>Administration — Résultats des tests</p>
+          </div>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <span style={{ fontSize: 13, opacity: 0.7 }}>{submissions.length} soumission{submissions.length !== 1 ? 's' : ''}</span>
+          <button onClick={clearAll} style={{
+            padding: '8px 16px', fontSize: 12, fontWeight: 600, background: 'rgba(255,255,255,0.12)',
+            color: '#fff', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 8, cursor: 'pointer', fontFamily: 'inherit'
+          }}>Tout effacer</button>
+        </div>
+      </header>
+
+      <div style={{ flex: 1, display: 'flex', maxHeight: 'calc(100vh - 76px)' }}>
+        {/* List */}
+        <div style={{
+          width: 420, borderRight: '1px solid #e5e5ea', background: '#fff',
+          display: 'flex', flexDirection: 'column', flexShrink: 0
+        }}>
+          <div style={{ padding: '16px 20px', borderBottom: '1px solid #f0f0f0' }}>
+            <input
+              type="text" value={search} onChange={e => setSearch(e.target.value)}
+              placeholder="Rechercher par nom ou email…"
+              style={{
+                width: '100%', padding: '10px 14px', fontSize: 13, border: '1px solid #e5e5ea',
+                borderRadius: 10, background: '#f7f9fb', fontFamily: 'inherit', outline: 'none'
+              }}
+            />
+          </div>
+          <div style={{ flex: 1, overflowY: 'auto' }}>
+            {filtered.length === 0 && (
+              <div style={{ padding: '48px 24px', textAlign: 'center' }}>
+                <p style={{ fontSize: 14, color: '#9a958b' }}>
+                  {submissions.length === 0 ? 'Aucune soumission pour le moment.' : 'Aucun résultat.'}
+                </p>
+              </div>
+            )}
+            {filtered.map((s, i) => (
+              <div key={i} onClick={() => setSelected(s)} style={{
+                padding: '16px 20px', borderBottom: '1px solid #f5f5f5', cursor: 'pointer',
+                background: selected === s ? '#f0f7f2' : 'transparent',
+                transition: 'background .15s'
+              }}
+              onMouseOver={e => { if (selected !== s) e.currentTarget.style.background = '#fafafa'; }}
+              onMouseOut={e => { if (selected !== s) e.currentTarget.style.background = 'transparent'; }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
+                  <span style={{ fontWeight: 600, fontSize: 14 }}>{s.firstName} {s.lastName}</span>
+                  <span style={{ fontSize: 11, color: '#9a958b' }}>{formatDate(s.date)}</span>
+                </div>
+                <p style={{ fontSize: 12, color: '#6a6a6a', margin: 0 }}>{s.email}</p>
+                {s.answers && <p style={{ fontSize: 11, color: '#9a958b', margin: '4px 0 0' }}>{s.answers.length} réponses</p>}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Detail */}
+        <div style={{ flex: 1, overflowY: 'auto', padding: '32px 40px', background: '#f7f9fb' }}>
+          {!selected ? (
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', color: '#9a958b' }}>
+              <p style={{ fontSize: 15 }}>Sélectionne une soumission pour voir les détails.</p>
+            </div>
+          ) : (
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 32 }}>
+                <div style={{
+                  width: 52, height: 52, borderRadius: 14, background: '#14362B',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  color: '#fff', fontSize: 18, fontWeight: 700
+                }}>{selected.firstName?.[0]}{selected.lastName?.[0]}</div>
+                <div>
+                  <h2 style={{ fontSize: 22, fontWeight: 700, margin: '0 0 2px', letterSpacing: '-0.02em' }}>{selected.firstName} {selected.lastName}</h2>
+                  <p style={{ fontSize: 13, color: '#6a6a6a', margin: 0 }}>{selected.email} · {formatDate(selected.date)}</p>
+                </div>
+              </div>
+
+              {selected.answers && selected.answers.length > 0 && (
+                <div>
+                  <h3 style={{ fontSize: 14, fontWeight: 700, margin: '0 0 16px', color: '#1b1b1b' }}>Réponses brutes</h3>
+                  <div style={{ display: 'grid', gap: 8 }}>
+                    {selected.answers.map((a, i) => (
+                      <div key={i} style={{
+                        padding: '12px 16px', background: '#fff', borderRadius: 10,
+                        border: '1px solid #eae6de', fontSize: 13
+                      }}>
+                        <span style={{ fontWeight: 600, color: '#1b1b1b' }}>{a.questionId}</span>
+                        <span style={{ color: '#6a6a6a', marginLeft: 8 }}>→ {a.value}/100</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              <p style={{ fontSize: 12, color: '#9a958b', marginTop: 24, lineHeight: 1.5 }}>
+                Pour voir le profil complet avec radar et scores par pilier, demande à cette personne de te transmettre son PDF téléchargé depuis la page de résultats.
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<AdminApp />);
+</script>
+</body>
+</html>

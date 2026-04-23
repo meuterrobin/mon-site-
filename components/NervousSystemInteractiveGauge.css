@@ -1,0 +1,290 @@
+/* ════════════════════════════════════════════════════════════════
+   1. VARIABLES & BASE
+   ════════════════════════════════════════════════════════════════ */
+.ic-balance-container {
+  --ink:       #1a1a1a;
+  --ink-soft:  #5a5a5a;
+  --ink-fade:  #9a9a9a;
+  --bg:        #faf8f4;
+  --surface:   #ffffff;
+  --line:      #ebe8e2;
+
+  /* Couleurs extrêmes */
+  --blue-deep:    #1A4A9E;   /* slider à 0%   — repos profond */
+  --blue-mid:     #5E8BD9;
+  --neutral:      #c8c2b4;   /* slider à 50%  — équilibre */
+  --red-mid:      #E87555;
+  --red-deep:     #A8331C;   /* slider à 100% — survie aiguë */
+
+  /* Variables dynamiques (mises à jour en JS via .style) */
+  --t:            0.5;       /* position normalisée 0 à 1 */
+  --color-active: #c8c2b4;   /* couleur dominante interpolée */
+  --color-soft:   #c8c2b4;   /* version plus claire pour fonds */
+
+  --ease:     cubic-bezier(0.33, 1, 0.68, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  color: var(--ink);
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.55;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ic-balance-container *, 
+  .ic-balance-container *::before, 
+  .ic-balance-container *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.05s !important;
+  }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   2. CONTENEUR PRINCIPAL
+   ════════════════════════════════════════════════════════════════ */
+.ic-balance {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 40px 20px 64px;
+}
+
+.ic-balance-header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+.ic-balance-header .eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-fade);
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+.ic-balance-header .title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(26px, 5vw, 38px);
+  letter-spacing: -0.025em;
+  margin: 0 0 10px;
+  font-variation-settings: "opsz" 144;
+  line-height: 1.1;
+  color: #1a1a1a;
+}
+.ic-balance-header .title em { 
+  font-style: italic; 
+  font-weight: 300; 
+  color: var(--ink-soft); 
+}
+.ic-balance-header .lede {
+  font-size: 14.5px;
+  color: var(--ink-soft);
+  max-width: 380px;
+  margin: 0 auto;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   3. JAUGE (demi-cercle SVG + aiguille rotative + emoji)
+   ════════════════════════════════════════════════════════════════ */
+.gauge-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2 / 1.05;
+  margin: 0 auto 12px;
+  user-select: none;
+}
+.gauge-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  display: block;
+}
+
+/* Aiguille — pivote en fonction de --t (rotation de -75deg à +75deg) */
+.needle-group {
+  transform-origin: 320px 305px;
+  transform: rotate(calc((var(--t) - 0.5) * 150deg));
+  transition: transform 0.6s var(--ease-out);
+}
+
+/* Emoji à l'extrémité de l'aiguille */
+.needle-emoji {
+  position: absolute;
+  left: 50%;
+  bottom: 6%;
+  transform: translateX(-50%);
+  font-size: clamp(28px, 6vw, 36px);
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+/* Libellé d'état au-dessus de la jauge */
+.state-label {
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--color-active);
+  text-align: center;
+  transition: color 0.4s ease;
+  white-space: nowrap;
+}
+
+/* Étiquettes Repos / Survie sous la jauge */
+.gauge-ends {
+  display: flex;
+  justify-content: space-between;
+  margin: -10px 8px 18px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.gauge-ends .end-left  { color: var(--blue-deep); }
+.gauge-ends .end-right { color: var(--red-deep); }
+
+/* ════════════════════════════════════════════════════════════════
+   4. SLIDER PERSONNALISÉ
+   ════════════════════════════════════════════════════════════════ */
+.slider-container {
+  position: relative;
+  width: 100%;
+  height: 44px;             /* zone de tap large pour mobile */
+  margin: 0 0 14px;
+  cursor: grab;
+  touch-action: none;       /* IMPORTANT — empêche le scroll pendant le drag */
+}
+.slider-container:active { cursor: grabbing; }
+
+.slider-track {
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 7px;
+  transform: translateY(-50%);
+  border-radius: 999px;
+  background: linear-gradient(
+    to right,
+    var(--blue-deep) 0%,
+    var(--blue-mid) 25%,
+    var(--neutral) 50%,
+    var(--red-mid) 75%,
+    var(--red-deep) 100%
+  );
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.08);
+}
+
+.slider-handle {
+  position: absolute;
+  top: 50%;
+  left: calc(var(--t) * 100%);
+  transform: translate(-50%, -50%);
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--color-active);
+  border: 3px solid #fff;
+  box-shadow:
+    0 2px 8px rgba(0,0,0,0.18),
+    0 0 0 1px rgba(0,0,0,0.04);
+  transition:
+    left      0.6s var(--ease-out),
+    background-color 0.4s ease,
+    transform 0.2s var(--ease);
+  will-change: left, background-color;
+}
+.slider-container:active .slider-handle,
+.slider-container.is-dragging .slider-handle {
+  transform: translate(-50%, -50%) scale(1.15);
+  box-shadow:
+    0 4px 14px rgba(0,0,0,0.22),
+    0 0 0 6px var(--color-soft);
+}
+
+/* ════════════════════════════════════════════════════════════════
+   5. PHRASE D'ÉTAT (sous le slider)
+   ════════════════════════════════════════════════════════════════ */
+.state-readout {
+  text-align: center;
+  margin: 14px 0 32px;
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--color-active);
+  letter-spacing: -0.005em;
+  transition: color 0.4s ease;
+  min-height: 28px;
+}
+.state-readout em {
+  font-style: italic;
+  color: var(--ink-soft);
+  font-weight: 300;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   6. SYMPTÔMES (5 catégories — texte qui change avec --t)
+   ════════════════════════════════════════════════════════════════ */
+.symptoms-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.symptom-row {
+  position: relative;
+  padding: 16px 16px 16px 22px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  transition: border-color 0.4s ease, box-shadow 0.4s ease;
+  text-align: left;
+}
+.symptom-row::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 14px;
+  bottom: 14px;
+  width: 4px;
+  border-radius: 2px;
+  background: var(--color-active);
+  opacity: 0.8;
+  transition: background-color 0.4s ease;
+}
+
+.symptom-cat {
+  display: block;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-active);
+  margin-bottom: 4px;
+  transition: color 0.4s ease;
+}
+.symptom-text {
+  display: block;
+  font-size: 14.5px;
+  color: var(--ink);
+  line-height: 1.5;
+  font-weight: 500;
+  transition: opacity 0.25s ease;
+}
+.symptom-row.is-changing .symptom-text {
+  opacity: 0;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   7. RESPONSIVE — Mobile petit
+   ════════════════════════════════════════════════════════════════ */
+@media (max-width: 380px) {
+  .ic-balance { padding: 32px 14px 48px; }
+  .symptom-row { padding: 14px 14px 14px 20px; }
+  .symptom-text { font-size: 13.5px; }
+}
+
+/* Desktop : un peu plus aéré */
+@media (min-width: 720px) {
+  .ic-balance { padding: 56px 24px 80px; max-width: 600px; }
+  .gauge-wrap { aspect-ratio: 2 / 1.1; }
+}

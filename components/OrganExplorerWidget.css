@@ -1,0 +1,89 @@
+.ns-organ-wrapper {
+  --bg: transparent;
+  --surface: #ffffff;
+  --ink: #1b1b1b;
+  --ink-soft: #4a4a4a;
+  --ink-muted: #9a958b;
+  --hairline: rgba(0, 0, 0, 0.08);
+
+  --alert:     #b94848;
+  --alert-bg:  #f6e8e8;
+  --balance:   #527d54;
+  --balance-bg:#e9efe7;
+
+  --c-cerveau:     #8a6bb1;  --c-cerveau-bg:     #f1ecf6;
+  --c-coeur:       #c84d4d;  --c-coeur-bg:       #fbeeee;
+  --c-estomac:     #d98142;  --c-estomac-bg:     #fbf0e6;
+  --c-intestins:   #c9a23a;  --c-intestins-bg:   #faf4df;
+  --c-respiration: #4a7fb0;  --c-respiration-bg: #eaf1f8;
+  --c-muscles:     #4a9a8b;  --c-muscles-bg:     #e7f3f0;
+  --c-glycemie:    #6d9b54;  --c-glycemie-bg:    #eef4e7;
+  --c-peau:        #c5758d;  --c-peau-bg:        #f9ecef;
+  --c-douleur:     #6b7684;  --c-douleur-bg:     #eef0f2;
+
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.ns-section {
+  padding: 0;
+}
+.ns-container { 
+  max-width: 600px; 
+  margin: 0 auto; 
+}
+
+/* HEADER */
+.ns-header { text-align: left; margin-bottom: clamp(30px, 5vw, 40px); }
+.ns-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 12px; display: block; }
+.ns-title { font-family: "DM Sans", sans-serif; font-weight: 700; font-size: clamp(24px, 4vw, 32px); line-height: 1.1; letter-spacing: -0.03em; color: var(--ink); margin: 0 0 16px; }
+.ns-sub { font-size: 16px; line-height: 1.6; color: var(--ink-soft); margin: 0; max-width: 500px; }
+.ns-sub strong { color: var(--ink); font-weight: 600; }
+
+/* VIEWPORT */
+.ns-viewport { 
+  display: grid; 
+  background: var(--surface); 
+  border: 1px solid var(--hairline); 
+  border-radius: 20px; 
+  overflow: hidden; 
+  position: relative; 
+  box-shadow: 0 10px 30px rgba(0,0,0,0.03); 
+  min-height: 380px;
+}
+.state-grid, .state-panel { grid-area: 1 / 1; transition: opacity 280ms var(--ease); }
+.state-panel { opacity: 0; pointer-events: none; }
+.ns-viewport.is-panel .state-grid { opacity: 0; pointer-events: none; }
+.ns-viewport.is-panel .state-panel { opacity: 1; pointer-events: auto; }
+
+/* GRILLE */
+.state-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; padding: 12px; }
+.organ-btn { 
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; 
+  padding: 24px 10px; background: transparent; border: 0; border-radius: 12px; 
+  cursor: pointer; transition: background 260ms var(--ease); 
+}
+.organ-btn:hover { background: var(--c-bg); }
+.organ-icon { width: 28px; height: 28px; color: var(--c); transition: transform 300ms var(--ease); }
+.organ-btn:hover .organ-icon { transform: scale(1.1); }
+.organ-label { font-size: 12px; font-weight: 500; color: var(--ink-soft); }
+
+/* PANNEAU */
+.state-panel { padding: 30px; }
+.panel-top { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; }
+.panel-back { 
+  width: 36px; height: 36px; border-radius: 50%; background: #f7f4ec; border: none; cursor: pointer; 
+  display: flex; align-items: center; justify-content: center; color: var(--ink); 
+}
+.panel-chip { width: 44px; height: 44px; border-radius: 12px; background: var(--c-bg); color: var(--c); display: flex; align-items: center; justify-content: center; }
+.panel-chip svg { width: 24px; height: 24px; }
+.panel-name { font-family: "DM Sans", serif; font-size: 24px; color: var(--c); font-weight: 500; margin: 0; }
+.panel-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.col-tag { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; padding: 4px 10px; border-radius: 6px; margin-bottom: 12px; }
+.col-tag.alert { color: var(--alert); background: var(--alert-bg); }
+.col-tag.balance { color: var(--balance); background: var(--balance-bg); }
+.col-text { font-size: 14px; line-height: 1.6; color: var(--ink-soft); margin: 0; }
+
+@media (max-width: 500px) { 
+  .panel-cols { grid-template-columns: 1fr; } 
+  .state-grid { grid-template-columns: repeat(2, 1fr); }
+}

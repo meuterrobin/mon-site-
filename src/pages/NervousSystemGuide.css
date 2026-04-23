@@ -1,0 +1,583 @@
+.ns-guide-container {
+  --ink:       #1a1a1a;
+  --ink-soft:  #5a5a5a;
+  --ink-fade:  #9a9a9a;
+  --bg:        #faf8f4;
+  --surface:   #ffffff;
+  --line:      #ebe8e2;
+
+  /* 6 palettes d'étape */
+  --c1: #9B7FE8; --c1-bg: #F4EEFB; --c1-ink: #6B4FA8; /* Pensée */
+  --c2: #5E8BD9; --c2-bg: #ECF2FB; --c2-ink: #3A5FA0; /* Cerveau */
+  --c3: #6FC48E; --c3-bg: #EEF7F1; --c3-ink: #3F8D5B; /* Nerveux */
+  --c4: #E8A558; --c4-bg: #FBF2E6; --c4-ink: #A06522; /* Hormones */
+  --c5: #E87885; --c5-bg: #FBEDEF; --c5-ink: #A84953; /* Corps */
+  --c6: #9B9BA8; --c6-bg: #F2F2F4; --c6-ink: #5A5A66; /* Boucle */
+  --c7: #0D9488; --c7-bg: #F0FDFA; --c7-ink: #115E59; /* Régulation */
+
+  --ease:     cubic-bezier(0.33, 1, 0.68, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* CTA Button Colors */
+  --cta-bg: var(--ink);
+  --cta-text: var(--surface);
+  --cta-primary-bg: var(--c1);
+  --cta-primary-text: #ffffff;
+
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  line-height: 1.55;
+  min-height: 100vh;
+  position: relative;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ns-guide-container *, .ns-guide-container *::before, .ns-guide-container *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ═════════════════════════════════════════════════════════════════
+   CTA BUTTONS
+   ═════════════════════════════════════════════════════════════════ */
+.cta-container {
+  display: flex;
+  justify-content: center;
+  margin: 40px 0 24px 0;
+  width: 100%;
+}
+
+.cta-button {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  background-color: var(--cta-bg);
+  color: var(--cta-text);
+  border-radius: 999px;
+  padding: 16px 32px;
+  font-size: 16px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .cta-button {
+    width: auto;
+    min-width: 320px;
+  }
+}
+
+.cta-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+.cta-button.cta-primary {
+  background-color: var(--cta-primary-bg);
+  color: var(--cta-primary-text);
+  font-size: 18px;
+  padding: 20px 48px;
+  max-width: 500px;
+}
+.cta-button.cta-primary:hover {
+  box-shadow: 0 12px 30px rgba(155, 127, 232, 0.4); /* Based on --c1 */
+}
+
+/* ═════════════════════════════════════════════════════════════════
+   BARRE DE PROGRESSION (en haut de la page)
+   ═════════════════════════════════════════════════════════════════ */
+.scroll-progress {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(90deg,
+    var(--c1), var(--c2), var(--c3),
+    var(--c4), var(--c5), var(--c6), var(--c7));
+  transform-origin: left center;
+  transform: scaleX(0);
+  z-index: 100;
+  transition: transform 0.1s linear;
+}
+
+/* ═════════════════════════════════════════════════════════════════
+   HERO : schéma complet + intro
+   ═════════════════════════════════════════════════════════════════ */
+.hero {
+  min-height: 100vh;
+  padding: 120px 20px 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.hero-inner { max-width: 620px; width: 100%; }
+
+.hero-header { text-align: center; margin-bottom: 44px; }
+
+/* ----- Schéma (mini) dans le hero ----- */
+.schema { position: relative; }
+
+/* Cycle wrapper: contient les 6 étapes + leurs 5 connecteurs.
+   Sert d'ancre au rail de retour droit qui remonte de l'étape 6 vers l'étape 1. */
+.cycle-wrapper {
+  position: relative;
+  --cycle-duration: 14s;
+}
+
+.ic-stage {
+  position: relative;
+  display: block;
+  padding: 20px 22px 20px 76px;
+  background: var(--surface);
+  border: 1.5px solid var(--accent);
+  border-radius: 18px;
+  text-decoration: none;
+  color: var(--ink);
+  cursor: pointer;
+  transition: transform 0.35s var(--ease),
+              box-shadow 0.35s ease;
+  overflow: hidden;
+  isolation: isolate;
+}
+.ic-stage::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--accent-bg);
+  opacity: 0.5;
+  z-index: -2;
+}
+/* Bubble fill: saturation animée qui se propage depuis le centre
+   puis s'estompe, synchronisée via --delay sur chaque étape. */
+.cycle-wrapper .ic-stage::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 50%,
+      var(--accent) 0%,
+      var(--accent) 25%,
+      color-mix(in oklab, var(--accent) 50%, transparent) 55%,
+      transparent 75%);
+  opacity: 0;
+  transform: scale(0.1);
+  z-index: -1;
+  pointer-events: none;
+  animation: bubble-fill var(--cycle-duration) cubic-bezier(0.45, 0, 0.35, 1) infinite;
+  animation-delay: var(--delay, 0s);
+  mix-blend-mode: multiply;
+}
+@keyframes bubble-fill {
+  0%   { transform: scale(0.1); opacity: 0; }
+  4%   { transform: scale(0.7); opacity: 0.30; }
+  9%   { transform: scale(1.4); opacity: 0.38; }
+  14%  { transform: scale(2.0); opacity: 0; }
+  100% { transform: scale(2.0); opacity: 0; }
+}
+.ic-stage:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06), 0 2px 6px rgba(0, 0, 0, 0.03);
+}
+.ic-stage:active { transform: translateY(0); }
+
+.ic-num {
+  position: absolute;
+  top: 50%;
+  left: 20px;
+  transform: translateY(-50%);
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 30px;
+  font-weight: 500;
+  color: var(--accent-ink);
+  font-variation-settings: "opsz" 144;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  opacity: 0.9;
+}
+.ic-stage.is-loop .ic-num { font-size: 26px; font-weight: 400; }
+
+.ic-intervention {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 1px solid var(--accent);
+  color: var(--accent-ink);
+  margin-bottom: 7px;
+  letter-spacing: 0.01em;
+  line-height: 1.4;
+}
+.ic-intervention .sep { opacity: 0.45; font-size: 10px; }
+.ic-intervention .action { color: var(--ink-soft); font-weight: 400; }
+
+.ic-stage-title {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16.5px;
+  font-weight: 600;
+  margin: 0 0 3px;
+  color: var(--accent-ink);
+  letter-spacing: -0.01em;
+}
+.ic-stage-desc {
+  font-size: 13px;
+  color: var(--ink-soft);
+  margin: 0;
+  line-height: 1.45;
+}
+
+.ic-conn {
+  position: relative;
+  height: 44px;
+  padding-left: 76px;          /* align label with card body text */
+  display: flex;
+  align-items: center;
+}
+/* Left-corridor flow: thin dashed line that only appears during this
+   connector's slot in the cycle. Runs inside the empty corridor left
+   of the italic label (0 → 60px), so it never crosses the text. */
+.cycle-wrapper .ic-conn::before {
+  content: '';
+  position: absolute;
+  left: 30px; top: 0; bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom,
+    color-mix(in oklab, var(--from) 80%, transparent),
+    color-mix(in oklab, var(--to)   80%, transparent));
+  border-radius: 1px;
+  opacity: 0;
+  transform-origin: top center;
+  transform: scaleY(0);
+  animation: corridor-flow var(--cycle-duration) cubic-bezier(0.6, 0, 0.4, 1) infinite;
+  animation-delay: var(--delay, 0s);
+}
+.cycle-wrapper .ic-conn::after {
+  content: '';
+  position: absolute;
+  left: 28px;
+  width: 6px;
+  height: 14px;
+  border-radius: 3px;
+  background: radial-gradient(circle, var(--to) 0%, transparent 70%);
+  opacity: 0;
+  animation: corridor-spark var(--cycle-duration) cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  animation-delay: var(--delay, 0s);
+  filter: blur(0.5px);
+}
+@keyframes corridor-flow {
+  0%   { opacity: 0;    transform: scaleY(0); }
+  0.5% { opacity: 0.85; transform: scaleY(0); }
+  4%   { opacity: 0.85; transform: scaleY(1); }
+  5%   { opacity: 0;    transform: scaleY(1); }
+  100% { opacity: 0;    transform: scaleY(1); }
+}
+@keyframes corridor-spark {
+  0%   { top: -8px;  opacity: 0; }
+  0.5% { top: -8px;  opacity: 1; }
+  4%   { top: 100%;  opacity: 1; }
+  5%   { top: 100%;  opacity: 0; }
+  100% { top: 100%;  opacity: 0; }
+}
+/* Dernier connecteur ("Briser la boucle") — hors du cycle, rail statique discret */
+.ic-conn-break::before {
+  content: '';
+  position: absolute;
+  left: 30px; top: 0; bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom,
+    color-mix(in oklab, var(--from) 50%, transparent),
+    color-mix(in oklab, var(--to)   50%, transparent));
+  opacity: 0.5;
+  border-radius: 1px;
+}
+.ic-conn-label {
+  font-family: 'Fraunces', Georgia, serif;
+  font-style: italic;
+  font-size: 12.5px;
+  color: var(--ink-fade);
+  font-weight: 400;
+}
+
+/* Rail de retour droit : s'active une fois le cycle descendu jusqu'à l'étape 6,
+   remonte le long du bord droit de la pile des 6 étapes, puis se désactive.
+   Pas de delay : la fenêtre active est codée en fin de keyframes pour rester
+   en phase avec toutes les autres animations du cycle. */
+.cycle-return {
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  right: -10px;
+  width: 2px;
+  pointer-events: none;
+  background: linear-gradient(to bottom,
+    var(--c1) 0%, var(--c2) 20%, var(--c3) 40%,
+    var(--c4) 60%, var(--c5) 80%, var(--c6) 100%);
+  border-radius: 1px;
+  opacity: 0;
+  transform-origin: bottom center;
+  transform: scaleY(0);
+  animation: return-rail var(--cycle-duration) cubic-bezier(0.5, 0, 0.5, 1) infinite;
+}
+.cycle-return::after {
+  content: '';
+  position: absolute;
+  left: -4px;
+  width: 10px;
+  height: 18px;
+  border-radius: 5px;
+  background: radial-gradient(circle,
+    color-mix(in oklab, var(--c1) 85%, white) 0%,
+    transparent 70%);
+  opacity: 0;
+  animation: return-spark var(--cycle-duration) cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  filter: blur(1px);
+}
+/* Fenêtre active : 85% → 100% du cycle (les 2 dernières secondes sur 14s). */
+@keyframes return-rail {
+  0%,  84% { opacity: 0;    transform: scaleY(0); }
+  85%      { opacity: 0.9;  transform: scaleY(0); }
+  97%      { opacity: 0.9;  transform: scaleY(1); }
+  100%     { opacity: 0;    transform: scaleY(1); }
+}
+@keyframes return-spark {
+  0%,  84% { bottom: 0;    opacity: 0; }
+  85%      { bottom: 0;    opacity: 1; }
+  97%      { bottom: 100%; opacity: 1; }
+  100%     { bottom: 100%; opacity: 0; }
+}
+
+/* Indicateur de scroll sous le hero */
+.scroll-hint {
+  text-align: center;
+  margin-top: 40px;
+  color: var(--ink-fade);
+  font-size: 13px;
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  animation: bob 2s ease-in-out infinite;
+}
+.scroll-hint::after { content: ' ↓'; }
+@keyframes bob {
+  0%, 100% { transform: translateY(0); opacity: 0.7; }
+  50%      { transform: translateY(6px); opacity: 1; }
+}
+
+/* ═════════════════════════════════════════════════════════════════
+   STAGE SECTIONS : 6 blocs verticaux
+   ═════════════════════════════════════════════════════════════════ */
+.stage-section {
+  position: relative;
+  min-height: auto;
+  padding: 40px 20px 40px;
+  scroll-margin-top: 20px;
+}
+.stage-section-inner {
+  max-width: 680px;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* ----- Carte "featured" (grande version de la carte étape) ----- */
+.stage-featured {
+  position: relative;
+  z-index: 5;
+  padding: 28px 28px 28px 100px;
+  background: var(--surface);
+  border: 1.5px solid var(--accent);
+  border-radius: 22px;
+  overflow: hidden;
+  margin-bottom: 44px;
+  opacity: 0;
+  transform: scale(0.98) translateY(10px);
+  transition:
+    opacity     0.4s var(--ease-out),
+    transform   0.4s var(--ease-out);
+}
+.stage-section.is-visible .stage-featured {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+.stage-featured::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--accent-bg);
+  opacity: 0.45;
+  z-index: 0;
+}
+.stage-featured > * { position: relative; z-index: 1; }
+.stage-featured .num {
+  position: absolute;
+  top: 50%;
+  left: 28px;
+  transform: translateY(-50%);
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 52px;
+  color: var(--accent-ink);
+  opacity: 0.9;
+  line-height: 1;
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  font-variation-settings: "opsz" 144;
+}
+.stage-featured.is-loop .num { font-size: 44px; }
+.stage-featured .sf-intervention {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 1px solid var(--accent);
+  color: var(--accent-ink);
+  margin-bottom: 8px;
+}
+.stage-featured .sf-intervention .sep { opacity: 0.45; font-size: 10px; }
+.stage-featured .sf-intervention .action { color: var(--ink-soft); font-weight: 400; }
+.stage-featured .sf-title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(24px, 4vw, 32px);
+  color: var(--accent-ink);
+  margin: 0 0 6px;
+  font-variation-settings: "opsz" 144;
+  letter-spacing: -0.015em;
+}
+.stage-featured .sf-desc {
+  font-size: 15px;
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+/* ----- Zone de contenu (prose + viz intégrées) ----- */
+.stage-content {
+  opacity: 0;
+  transform: translateY(10px);
+  transition:
+    opacity   0.4s var(--ease-out) 0.05s,
+    transform 0.4s var(--ease-out) 0.05s;
+}
+.stage-section.is-visible .stage-content {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Teaser vers l'étape suivante */
+.next-teaser {
+  margin-top: 32px;
+  padding-top: 16px;
+  border-top: 1px dashed var(--line);
+  text-align: center;
+}
+.next-teaser a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--ink-fade);
+  text-decoration: none;
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 14px;
+  transition: color 0.3s;
+}
+.next-teaser a:hover { color: var(--ink-soft); }
+.next-teaser .arrow {
+  display: inline-block;
+  transition: transform 0.3s var(--ease);
+}
+.next-teaser a:hover .arrow { transform: translateY(3px); }
+
+/* ═════════════════════════════════════════════════════════════════
+   FOOTER : loop close + retour
+   ═════════════════════════════════════════════════════════════════ */
+.loop-footer {
+  padding: 80px 20px 120px;
+  text-align: center;
+  background: var(--surface);
+  border-top: 1px solid var(--line);
+}
+.loop-footer-inner { max-width: 520px; margin: 0 auto; }
+.loop-footer h2 {
+  font-family: 'Fraunces', serif;
+  font-weight: 400;
+  font-size: clamp(26px, 4vw, 36px);
+  margin: 0 0 14px;
+  letter-spacing: -0.02em;
+}
+.loop-footer h2 em { font-style: italic; color: var(--ink-soft); font-weight: 300; }
+.loop-footer p {
+  color: var(--ink-soft);
+  font-size: 15.5px;
+  line-height: 1.6;
+  margin: 0 0 32px;
+}
+.back-to-top {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 24px;
+  background: var(--ink);
+  color: var(--surface);
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  transition: transform 0.3s var(--ease), box-shadow 0.3s ease;
+}
+.back-to-top:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.15);
+}
+.back-to-top .loop-icon {
+  display: inline-block;
+  animation: spin 4s linear infinite;
+}
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(-360deg); }
+}
+
+/* ═════════════════════════════════════════════════════════════════
+   RESPONSIVE
+   ═════════════════════════════════════════════════════════════════ */
+@media (max-width: 600px) {
+  .hero { padding: 48px 14px 24px; }
+  .ic-stage { padding: 16px 16px 16px 62px; border-radius: 14px; }
+  .ic-num { font-size: 26px; left: 16px; }
+  .ic-stage-title { font-size: 15px; }
+  .ic-stage-desc  { font-size: 12px; }
+  .ic-intervention { font-size: 10.5px; padding: 3px 8px; }
+  .ic-conn       { height: 40px; padding-left: 62px; }
+  .cycle-wrapper .ic-conn::before { left: 22px; }
+  .cycle-wrapper .ic-conn::after  { left: 20px; }
+  .ic-conn-break::before          { left: 22px; }
+  .ic-conn-label { font-size: 11.5px; }
+  .cycle-return { right: -6px; }
+
+  .stage-section { padding: 32px 14px 32px; min-height: auto; }
+  .stage-featured {
+    padding: 22px 20px 22px 74px;
+    border-radius: 18px;
+    position: relative;
+  }
+  .stage-featured .num { font-size: 38px; left: 18px; }
+  .stage-featured.is-loop .num { font-size: 32px; }
+}

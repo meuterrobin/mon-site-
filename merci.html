@@ -1,0 +1,430 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bienvenue — Inner Clarity</title>
+<meta name="robots" content="noindex, nofollow" />
+<link rel="stylesheet" href="/assets/fonts.a83708bb.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: #faf8f4;
+    color: #4a4a4a;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 300;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.7;
+    font-size: 16px;
+  }
+  ::selection { background: #14362B; color: #fff; }
+
+  /* ── Typography ── */
+  h1, h2, h3 { color: #1b1b1b; letter-spacing: -0.03em; line-height: 1.15; }
+  h1 { font-family: 'Inter', sans-serif; font-weight: 700; font-size: clamp(32px, 5vw, 52px); }
+  h1 em { font-family: 'Fraunces', Georgia, serif; font-style: italic; font-weight: 400; display: block; }
+  h2 { font-family: 'Inter', sans-serif; font-weight: 700; font-size: clamp(26px, 4vw, 40px); }
+  h2 em { font-family: 'Fraunces', Georgia, serif; font-style: italic; font-weight: 400; }
+  h3 { font-family: 'Inter', sans-serif; font-weight: 600; font-size: clamp(18px, 2.5vw, 22px); }
+
+  .eyebrow {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #9a958b;
+  }
+  .prose { max-width: 540px; margin: 0 auto; color: #4a4a4a; font-weight: 300; line-height: 1.75; }
+
+  a { color: inherit; }
+
+  /* ── Layout ── */
+  .wrap { max-width: 720px; margin: 0 auto; padding: 0 24px; }
+
+  /* ── Nav ── */
+  nav.top-nav {
+    padding: 28px 24px;
+    text-align: center;
+    border-bottom: 1px solid #ebe8e2;
+  }
+  nav.top-nav span {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 20px;
+    color: #14362B;
+    letter-spacing: -0.01em;
+  }
+
+  /* ── Hero ── */
+  .hero {
+    text-align: center;
+    padding: 80px 24px 56px;
+  }
+  .check-icon {
+    width: 64px; height: 64px;
+    background: #14362B;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 28px;
+    animation: scaleIn 0.6s cubic-bezier(0.22, 0.61, 0.36, 1) 0.2s both;
+  }
+  .check-icon svg { width: 28px; height: 28px; }
+  .hero .eyebrow { margin-bottom: 16px; color: #14362B; }
+  .hero h1 { margin-bottom: 20px; }
+  .hero p { max-width: 500px; margin: 0 auto; color: #6a6a6a; font-weight: 300; font-size: 17px; line-height: 1.7; }
+  .hero-content { animation: fadeUp 0.8s cubic-bezier(0.22, 0.61, 0.36, 1) both; }
+
+  /* ── Video ── */
+  .video-section { padding: 0 24px 64px; }
+  .video-wrap {
+    max-width: 720px;
+    margin: 0 auto;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.06);
+    aspect-ratio: 16/9;
+    background: #14362B;
+    position: relative;
+  }
+  .video-wrap iframe {
+    width: 100%; height: 100%;
+    border: none;
+    display: block;
+  }
+  .video-placeholder {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: opacity 0.3s;
+  }
+  .video-placeholder:hover { opacity: 0.85; }
+  .play-btn {
+    width: 72px; height: 72px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.2);
+  }
+  .play-btn svg { width: 28px; height: 28px; fill: #fff; margin-left: 3px; }
+
+  /* ── Message card ── */
+  .message-card {
+    max-width: 600px;
+    margin: 0 auto 80px;
+    padding: 48px 40px;
+    background: #fff;
+    border: 1px solid #ebe8e2;
+    border-radius: 24px;
+    text-align: center;
+  }
+  .message-card blockquote {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(17px, 2.2vw, 20px);
+    color: #1b1b1b;
+    line-height: 1.6;
+    margin-bottom: 32px;
+  }
+  .message-card .sig { font-weight: 500; color: #1b1b1b; font-size: 15px; margin-bottom: 4px; }
+  .message-card .role { font-size: 13px; color: #9a958b; }
+
+  /* ── Programme section ── */
+  .programme { padding: 0 24px 80px; }
+  .programme header { text-align: center; margin-bottom: 48px; }
+  .programme header h2 { margin-bottom: 16px; }
+  .programme header p { max-width: 480px; margin: 0 auto; color: #6a6a6a; font-size: 16px; }
+
+  .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 720px; margin: 0 auto; }
+  .card {
+    background: #fff;
+    border: 1px solid #ebe8e2;
+    border-radius: 20px;
+    padding: 32px 28px;
+    transition: transform 0.3s cubic-bezier(0.22, 0.61, 0.36, 1), border-color 0.3s;
+  }
+  .card:hover { transform: translateY(-2px); border-color: #14362B; }
+  .card .num {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 28px;
+    color: #14362B;
+    margin-bottom: 12px;
+    display: block;
+  }
+  .card h3 { font-size: 18px; margin-bottom: 10px; font-weight: 600; font-style: normal; }
+  .card p { font-size: 14px; color: #6a6a6a; line-height: 1.65; font-weight: 300; }
+
+  .resource-card {
+    text-decoration: none;
+    display: block;
+    cursor: pointer;
+  }
+  .resource-status {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #9a958b;
+    margin-top: 8px;
+  }
+
+  /* ── CTA ── */
+  .cta-section {
+    margin: 0 24px 64px;
+    max-width: 720px;
+    margin-left: auto;
+    margin-right: auto;
+    background: #14362B;
+    border-radius: 24px;
+    padding: 64px 40px;
+    text-align: center;
+    color: #fff;
+  }
+  .cta-section .eyebrow { color: rgba(255,255,255,0.5); margin-bottom: 16px; }
+  .cta-section h2 { color: #fff; margin-bottom: 16px; }
+  .cta-section p { color: rgba(255,255,255,0.7); max-width: 440px; margin: 0 auto 32px; font-weight: 300; font-size: 16px; line-height: 1.7; }
+  .btn-pill {
+    display: inline-block;
+    padding: 16px 36px;
+    background: #faf8f4;
+    color: #14362B;
+    border-radius: 9999px;
+    font-weight: 500;
+    font-size: 15px;
+    text-decoration: none;
+    transition: transform 0.2s cubic-bezier(0.22, 0.61, 0.36, 1), box-shadow 0.2s;
+    font-family: 'Inter', sans-serif;
+  }
+  .btn-pill:hover { transform: scale(1.03); box-shadow: 0 4px 20px rgba(0,0,0,0.15); }
+
+  /* ── Info grid ── */
+  .info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    max-width: 720px;
+    margin: 0 auto 80px;
+    padding: 0 24px;
+  }
+  .info-card {
+    background: #fff;
+    border: 1px solid #ebe8e2;
+    border-radius: 20px;
+    padding: 32px 28px;
+    text-align: center;
+    transition: transform 0.3s cubic-bezier(0.22, 0.61, 0.36, 1), border-color 0.3s;
+  }
+  .info-card:hover { transform: translateY(-2px); border-color: #14362B; }
+  .info-card .label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #9a958b;
+    margin-bottom: 16px;
+  }
+  .info-card a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #14362B;
+    font-weight: 500;
+    font-size: 15px;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+  .info-card a:hover { opacity: 0.7; }
+  .info-card a span.arrow { font-size: 18px; }
+
+  /* ── Footer ── */
+  footer {
+    text-align: center;
+    padding: 40px 24px 56px;
+    border-top: 1px solid #ebe8e2;
+    font-size: 13px;
+    color: #9a958b;
+  }
+  footer a { text-decoration: underline; text-underline-offset: 3px; }
+  footer a:hover { color: #14362B; }
+
+  /* ── Animations ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes scaleIn {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* ── Mobile ── */
+  @media (max-width: 600px) {
+    .hero { padding: 56px 20px 40px; }
+    .cards { grid-template-columns: 1fr; }
+    .info-grid { grid-template-columns: 1fr; }
+    .cta-section { padding: 48px 24px; margin: 0 16px 48px; }
+    .message-card { padding: 36px 24px; margin-bottom: 56px; }
+    .video-section { padding: 0 16px 48px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="top-nav">
+  <span>Inner Clarity</span>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="check-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="20 6 9 17 4 12"></polyline>
+      </svg>
+    </div>
+    <p class="eyebrow">Inscription confirmée</p>
+    <h1>Bienvenue dans <em>ton parcours</em></h1>
+    <p>Quelque chose vient de commencer. Pas un programme. Un chemin — celui que tu vas parcourir avec moi pendant les six prochaines semaines.</p>
+  </div>
+</section>
+
+<!-- Video -->
+<section class="video-section">
+  <div class="video-wrap">
+    <a href="https://youtu.be/UnmWajXktH8" target="_blank" rel="noopener" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-decoration:none;gap:20px;">
+      <div class="play-btn">
+        <svg viewBox="0 0 24 24"><polygon points="8,5 20,12 8,19" fill="#fff"></polygon></svg>
+      </div>
+      <span style="color:rgba(255,255,255,0.85);font-family:'Fraunces',serif;font-style:italic;font-weight:400;font-size:clamp(16px,2vw,20px);max-width:320px;text-align:center;line-height:1.5;">Découvre le message que j'ai à te faire parvenir</span>
+    </a>
+  </div>
+</section>
+
+<!-- Message card -->
+<div class="wrap">
+  <div class="message-card">
+    <blockquote>Prends deux minutes pour regarder ce message — j'y partage avec toi ce qu'on va vivre ensemble pendant ces six semaines.</blockquote>
+    <p class="sig">Robin</p>
+    <p class="role">Kinésithérapeute · Inner Clarity</p>
+  </div>
+</div>
+
+<!-- Programme -->
+<section class="programme">
+  <header>
+    <h2>Ce que tu vas vivre <em>pendant six semaines</em></h2>
+    <p>Un cadre simple, humain, pensé pour que tu puisses avancer à ton rythme.</p>
+  </header>
+  <div class="cards">
+    <div class="card">
+      <span class="num">01</span>
+      <h3>Un appel hebdomadaire d'une heure</h3>
+      <p>Un rendez-vous fixe chaque semaine, où l'on aborde une notion clé et où l'on pratique ensemble les techniques associées.</p>
+    </div>
+    <div class="card">
+      <span class="num">02</span>
+      <h3>Un programme à pratiquer entre nos appels</h3>
+      <p>Pas un programme d'entraînement de plus. Un protocole de retour à l'équilibre — court, simple, conçu pour s'intégrer à ton quotidien sans le surcharger.</p>
+    </div>
+    <div class="card">
+      <span class="num">03</span>
+      <h3>Un accès libre quand tu en as besoin</h3>
+      <p>Si une situation te bloque dans la semaine, tu peux réserver un appel supplémentaire via mon calendrier. On en parle. C'est dans le cadre.</p>
+    </div>
+    <div class="card">
+      <span class="num">04</span>
+      <h3>Au bout de six semaines</h3>
+      <p>Tu auras compris comment fonctionne ton mental, et tu disposeras des outils concrets pour revenir à l'équilibre — par toi-même, dès que tu en sens le besoin.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Ressources pédagogiques -->
+<section class="programme" style="padding-top: 0;">
+  <header>
+    <h2>Tes ressources <em>semaine par semaine</em></h2>
+    <p>Retrouve ici les fiches associées à chaque thème. Elles seront débloquées au fil de ton parcours.</p>
+  </header>
+  <div class="cards resources">
+    <a href="https://innerclarity.io" target="_blank" rel="noopener" class="card resource-card">
+      <span class="num">01</span>
+      <h3>Pleine conscience</h3>
+      <p class="resource-status">Bientôt disponible</p>
+    </a>
+    <a href="https://innerclarity.io" target="_blank" rel="noopener" class="card resource-card">
+      <span class="num">02</span>
+      <h3>Respiration</h3>
+      <p class="resource-status">Bientôt disponible</p>
+    </a>
+    <a href="https://innerclarity.io" target="_blank" rel="noopener" class="card resource-card">
+      <span class="num">03</span>
+      <h3>Confiance</h3>
+      <p class="resource-status">Bientôt disponible</p>
+    </a>
+    <a href="https://innerclarity.io" target="_blank" rel="noopener" class="card resource-card">
+      <span class="num">04</span>
+      <h3>Émotions</h3>
+      <p class="resource-status">Bientôt disponible</p>
+    </a>
+    <a href="https://innerclarity.io" target="_blank" rel="noopener" class="card resource-card">
+      <span class="num">05</span>
+      <h3>Lâcher-prise</h3>
+      <p class="resource-status">Bientôt disponible</p>
+    </a>
+    <a href="https://innerclarity.io" target="_blank" rel="noopener" class="card resource-card">
+      <span class="num">06</span>
+      <h3>Équilibre</h3>
+      <p class="resource-status">Bientôt disponible</p>
+    </a>
+  </div>
+</section>
+
+<!-- CTA Calendly -->
+<section class="cta-section">
+  <p class="eyebrow">La suite</p>
+  <h2>Réserve <em>ton premier appel</em></h2>
+  <p>Choisis un créneau qui te convient pour notre première séance. On posera ensemble les bases du parcours, et on commencera la pratique.</p>
+  <a href="https://calendly.com/meuter-robin/30min" target="_blank" rel="noopener" class="btn-pill">Choisir mon créneau →</a>
+</section>
+
+<!-- Info grid -->
+<div class="info-grid">
+  <div class="info-card">
+    <p class="label">Une question, un blocage</p>
+    <a href="https://wa.me/32471244229" target="_blank" rel="noopener">
+      Écrire sur WhatsApp <span class="arrow">→</span>
+    </a>
+  </div>
+  <div class="info-card">
+    <p class="label">Réserver un appel libre</p>
+    <a href="https://calendly.com/meuter-robin/30min" target="_blank" rel="noopener">
+      Réserver un créneau <span class="arrow">→</span>
+    </a>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer>
+  Inner Clarity · Robin Meuter, kinésithérapeute · <a href="https://innerclarity.io" target="_blank" rel="noopener">innerclarity.io</a>
+</footer>
+
+</body>
+</html>

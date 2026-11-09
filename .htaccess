@@ -1,0 +1,44 @@
+# Inner Clarity
+Options -MultiViews
+DirectoryIndex index.html
+ErrorDocument 404 /index.html
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+
+# /page.html -> /page (une seule adresse par page)
+RewriteCond %{THE_REQUEST} \s/+([a-z0-9-]+)\.html[\s?] [NC]
+RewriteCond %1 !^(index|merci)$ [NC]
+RewriteRule ^ /%1 [R=301,L]
+
+# /index.html -> /
+RewriteCond %{THE_REQUEST} \s/+index\.html[\s?] [NC]
+RewriteRule ^ / [R=301,L]
+
+# /test/[theme] -> page du test (liens par theme)
+RewriteRule ^test/[^/]+/?$ /test.html [L,NC]
+# /page -> page.html (adresse sans .html)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{DOCUMENT_ROOT}/$1.html -f
+RewriteRule ^([a-z0-9-]+)/?$ /$1.html [L]
+</IfModule>
+
+# Encodage UTF-8 pour les accents (llms.txt, robots.txt...)
+AddDefaultCharset UTF-8
+<IfModule mod_mime.c>
+AddType "text/plain; charset=UTF-8" .txt
+AddCharset UTF-8 .txt .html .css .js .xml
+</IfModule>
+
+<IfModule mod_expires.c>
+ExpiresActive On
+ExpiresByType text/html "access plus 0 seconds"
+ExpiresByType text/css "access plus 1 year"
+ExpiresByType text/javascript "access plus 1 year"
+ExpiresByType application/javascript "access plus 1 year"
+ExpiresByType font/woff2 "access plus 1 year"
+ExpiresByType image/webp "access plus 1 month"
+ExpiresByType image/png "access plus 1 month"
+ExpiresByType image/jpeg "access plus 1 month"
+</IfModule>

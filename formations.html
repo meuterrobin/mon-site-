@@ -89,7 +89,7 @@
     background: #1d1d1f; color: #fff; border-color: #1d1d1f;
   }
   .ic-legal-foot { display: flex; justify-content: center; padding: 18px 24px 22px; background: #faf8f4; border-top: 1px solid #ebe8e2; }
-  .ic-legal-foot a { font-size: 12px; color: #9a958b; text-decoration: none; letter-spacing: 0.01em; }
+  .ic-legal-foot a { font-size: 12px; color: #756f64; text-decoration: none; letter-spacing: 0.01em; }
   .ic-legal-foot a:hover { color: #14362B; text-decoration: underline; text-underline-offset: 3px; }
 </style>
 <style>@media (max-width: 979.98px) { .ic-acc-content { order: -1; } }</style>
@@ -98,9 +98,23 @@
 <body>
 <div id="root"><div data-screen-label="Formations" style="min-height: 100vh; display: flex; flex-direction: column;"><header style="position: fixed; top: 0px; right: 0px; z-index: 50; padding: 24px; pointer-events: none;"><button aria-label="Menu" style="pointer-events: auto; padding: 12px; background: rgb(255, 255, 255); border-radius: 9999px; border: 1px solid rgb(240, 240, 241); box-shadow: rgba(0, 0, 0, 0.08) 0px 2px 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s;"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="7" x2="20" y2="7"></line><line x1="4" y1="17" x2="20" y2="17"></line></svg></button></header><style>
         @keyframes fade { from { opacity:0 } to { opacity:1 } }
-      </style><main style="flex: 1 1 0%; display: flex; flex-direction: column;"><div style="flex: 1 1 0%; display: flex; align-items: center; justify-content: center; background: rgb(248, 245, 233); padding: 120px 24px; min-height: 80vh;"><div style="text-align: center; max-width: 560px;"><span style="display: inline-block; padding: 4px 14px; border-radius: 9999px; background: rgb(255, 255, 255); border: 1px solid rgba(20, 54, 43, 0.2); color: rgb(20, 54, 43); font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 20px;">En construction</span><h1 style="font-size: clamp(32px, 5vw, 52px); font-weight: 700; letter-spacing: -0.025em; color: rgb(20, 54, 43); margin: 0px 0px 16px; line-height: 1.1;">Formations &amp; Conférences</h1><p style="color: rgb(90, 90, 90); font-size: 17px; line-height: 1.6; margin: 0px;">Cette page est en cours de préparation. Reviens bientôt pour découvrir le contenu.</p></div></div></main><footer class="ic-legal-foot"><a href="/mentions-legales">Mentions légales et confidentialité</a></footer></div></div>
+      </style><main style="flex: 1 1 0%; display: flex; flex-direction: column;"><div style="flex: 1 1 0%; display: flex; align-items: center; justify-content: center; background: rgb(248, 245, 233); padding: 120px 24px; min-height: 80vh;"><div style="text-align: center; max-width: 560px;"><span style="display: inline-block; padding: 4px 14px; border-radius: 9999px; background: rgb(255, 255, 255); border: 1px solid rgba(20, 54, 43, 0.2); color: rgb(20, 54, 43); font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 20px;">En construction</span><h1 style="font-size: clamp(32px, 5vw, 52px); font-weight: 700; letter-spacing: -0.025em; color: rgb(20, 54, 43); margin: 0px 0px 16px; line-height: 1.1;">Formations &amp; Conférences</h1><p style="color: rgb(90, 90, 90); font-size: 17px; line-height: 1.6; margin: 0px;">Cette page est en cours de préparation. Reviens bientôt pour découvrir le contenu.</p></div></div></main><footer class="ic-foot"><div class="ic-foot-in"><button type="button" class="ic-foot-brand" aria-label="Inner Clarity, retour à l'accueil"><img src="/assets/logo.png" alt="" width="38" height="38" loading="lazy"><span><b>Inner Clarity</b><span>Régulation du système nerveux</span></span></button><nav class="ic-foot-nav" aria-label="Pied de page"><a href="/test">Test gratuit</a><a href="/guide">Guide</a><a href="/a-propos">Qui sommes-nous</a><a href="https://www.instagram.com/robin_meuter/" target="_blank" rel="noopener noreferrer">Instagram</a></nav><p class="ic-foot-legal">© 2026 Inner Clarity · Robin Meuter · <a href="/mentions-legales">Mentions légales et confidentialité</a></p></div><style>
+.ic-foot{background:#faf8f4;border-top:1px solid #ebe8e2;padding:34px 24px 26px}
+.ic-foot-in{max-width:1100px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:20px;text-align:center}
+.ic-foot-brand{display:flex;align-items:center;gap:12px;background:none;border:none;padding:0;cursor:pointer;font-family:inherit;text-align:left}
+.ic-foot-brand img{width:38px;height:38px;border-radius:50%;display:block}
+.ic-foot-brand b{display:block;font-size:15px;font-weight:700;letter-spacing:-.01em;color:#14362B}
+.ic-foot-brand span{display:block;margin-top:1px;font-size:12px;color:#756f64}
+.ic-foot-nav{display:flex;flex-wrap:wrap;justify-content:center;gap:4px 6px}
+.ic-foot-nav a{padding:9px 12px;font-size:14px;font-weight:500;color:#14362B;text-decoration:none;border-radius:99px;transition:background .2s}
+.ic-foot-nav a:hover{background:#eef2ea}
+.ic-foot-legal{margin:0;font-size:12.5px;line-height:1.6;color:#756f64}
+.ic-foot-legal a{color:#756f64;text-decoration:underline;text-underline-offset:3px;text-decoration-color:#d8d2c6}
+.ic-foot-legal a:hover{color:#14362B}
+@media (min-width:860px){.ic-foot-in{flex-direction:row;flex-wrap:wrap;justify-content:space-between;text-align:left}.ic-foot-legal{flex-basis:100%;padding-top:18px;border-top:1px solid #ebe8e2}}
+</style></footer><div class="tweaks-panel"><h4>Tweaks</h4><div class="tweaks-row"><label>Page</label><div class="opt-btns"><button class="">Accueil</button><button class="">Test</button><button class="">Guide</button><button class="">À propos</button><button class="active">Formations</button></div></div><div class="tweaks-row"><label>Teinte du fond</label><div class="opt-btns"><button class="">apple</button><button class="">warm</button><button class="active">cool</button><button class="">neutral</button></div></div></div></div></div>
 <script src="/assets/react-18.3.1.min.js"></script>
 <script src="/assets/react-dom-18.3.1.min.js"></script>
-<script src="/assets/app.c82e7d10.js"></script>
+<script src="/assets/app.fa0a73f9.js"></script>
 </body>
 </html>
